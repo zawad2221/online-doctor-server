@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'chamber',
     'doctor',
     'pathology',
-    'visiting_schedule'
+    'visiting_schedule',
+    'appointment'
 ]
 
 MIDDLEWARE = [
