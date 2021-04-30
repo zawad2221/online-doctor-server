@@ -79,7 +79,7 @@ def getAlreadyBookedAppointment(patientId, visitingScheduleId, date):
             appointmentVisitingScheduleId = visitingScheduleId,
             appointmentDate = date
             )
-
+#if the patient has a appointment on a specific visiting schedule in upcomming date
 def getAppointmentByPatientIdVisitingScheduleIdAndDate(request, patientId, visitingScheduleId, date):
     if request.method=="GET":
         appointment = getAlreadyBookedAppointment(patientId, visitingScheduleId, date)
@@ -91,7 +91,8 @@ def getAppointmentByPatientIdVisitingScheduleIdAndDate(request, patientId, visit
 def getAppointmentByPatientId(request, patientId):
     #test(request)
     if request.method =="GET":
-        appointment = Appointment.objects.filter(appointmentPatientId=patientId)
+        patient = Patient.objects.get(patientUserId=int(patientId))
+        appointment = Appointment.objects.filter(appointmentPatientId=patient.patientId)
         appointmentSerializer = AppointmentSerializer(appointment, many = True)
         return JsonResponse(appointmentSerializer.data, status=200, safe= False)
     else:
@@ -106,6 +107,25 @@ def getBookedPatientNumberOnScheduleIdAndDate(request, visitingScheduleId, date)
     else:
         return HttpResponse("bad request")
 
+
+#return visited appointment
+def getOldAppointmentOfPatient(request, patientUserId, dateOfToday):
+    if request.method=="GET":
+        appointment = Appointment.objects.filter(appointmentPatientId__patientUserId__userId = patientUserId, appointmentDate__lt = dateOfToday)
+        appointmentSerializer = AppointmentSerializer(appointment, many =True)
+        print(len(appointment))
+        return JsonResponse(appointmentSerializer.data, status=200, safe=False)
+    else:
+        return HttpResponse("bad request")
+#return upcomming appointment
+def getNewAppointmentOfPatient(request, patientUserId, dateOfToday):
+    if request.method=="GET":
+        appointment = Appointment.objects.filter(appointmentPatientId__patientUserId__userId = patientUserId, appointmentDate__gte = dateOfToday)
+        appointmentSerializer = AppointmentSerializer(appointment, many =True)
+        print(len(appointment))
+        return JsonResponse(appointmentSerializer.data, status=200, safe=False)
+    else:
+        return HttpResponse("bad request")
 
 
 def getAppointmentByDateSchedule(date, scheduleId):

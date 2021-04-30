@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import makeAppointment, getAppointmentByPatientId, getBookedPatientNumberOnScheduleIdAndDate,getAppointmentByPatientIdVisitingScheduleIdAndDate
+from .views import makeAppointment, getAppointmentByPatientId, getBookedPatientNumberOnScheduleIdAndDate,getAppointmentByPatientIdVisitingScheduleIdAndDate, getNewAppointmentOfPatient, getOldAppointmentOfPatient
 
 urlpatterns = [
     path("makeAppointment/", makeAppointment, name="makeAppointment"),
@@ -13,5 +13,15 @@ urlpatterns = [
         "getAppointmentByPatientIdVisitingScheduleIdAndDate/<str:patientId>/<str:visitingScheduleId>/<str:date>/", 
         getAppointmentByPatientIdVisitingScheduleIdAndDate, 
         name="getAppointmentByPatientIdVisitingScheduleIdAndDate"
+        ),
+    path(
+        "getOldAppointmentOfPatient/<str:patientUserId>/<str:dateOfToday>/", 
+        getOldAppointmentOfPatient, 
+        name="getOldAppointmentOfPatient"
+        ),
+    path(
+        "getNewAppointmentOfPatient/<str:patientUserId>/<str:dateOfToday>/", 
+        getNewAppointmentOfPatient, 
+        name="getNewAppointmentOfPatient"
         )
 ]

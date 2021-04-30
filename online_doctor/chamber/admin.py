@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Chamber, Location
+from .models import Chamber, Location, AskedQuery
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -33,3 +33,4 @@ class ChamberAdmin(admin.ModelAdmin):
 
 admin.site.register(Chamber, ChamberAdmin)
 admin.site.register(Location, LocationAdmin)
+admin.site.register(AskedQuery)

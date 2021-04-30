@@ -1,9 +1,11 @@
 from django.db import models
 from rest_framework import serializers
 
-from .models import Chamber, Location
+from .models import Chamber, Location, AskedQuery
 from custom_user.models import User
 from custom_user.serializers import CustomUserSerializer
+from patient.models import PatientQuery
+from patient.serializers import PatientQuerySerializer
 
 class RelatedFieldAlternative(serializers.PrimaryKeyRelatedField):
     def __init__(self, **kwargs):
@@ -39,3 +41,9 @@ class ChamberSerializer(serializers.ModelSerializer):
         fields = ['chamberId','chamberLocation','chamberUser']
 
     read_only_fields = ('chamberLocation','chamberUser')
+
+class AskedQuerySerializer(serializers.ModelSerializer):
+    query = RelatedFieldAlternative(queryset=PatientQuery.objects.all(), serializer=PatientQuerySerializer, source='queryId')
+    class Meta:
+        model = AskedQuery
+        fields = ['askedQueryId', 'askedQueryAnswer','chamberId','query']
