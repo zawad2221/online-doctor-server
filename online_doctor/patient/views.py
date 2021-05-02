@@ -49,6 +49,7 @@ def saveAskedQuery(request):
             if patientQuery.is_valid():
                 patientQuery.save()
                 data['query']=patientQuery.data['queryId']
+                data['chamber']=data['chamber']['chamberId']
                 askedQuery = AskedQuerySerializer(data=data)
                 if askedQuery.is_valid():
                     askedQuery.save()

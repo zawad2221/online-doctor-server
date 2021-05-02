@@ -2,6 +2,7 @@ from django.db import models
 from rest_framework import serializers
 
 from .models import Chamber, Location, AskedQuery
+
 from custom_user.models import User
 from custom_user.serializers import CustomUserSerializer
 from patient.models import PatientQuery
@@ -44,6 +45,7 @@ class ChamberSerializer(serializers.ModelSerializer):
 
 class AskedQuerySerializer(serializers.ModelSerializer):
     query = RelatedFieldAlternative(queryset=PatientQuery.objects.all(), serializer=PatientQuerySerializer, source='queryId')
+    chamber = RelatedFieldAlternative(queryset=Chamber.objects.all(),serializer = ChamberSerializer,source = 'chamberId')
     class Meta:
         model = AskedQuery
-        fields = ['askedQueryId', 'askedQueryAnswer','chamberId','query']
+        fields = ['askedQueryId', 'askedQueryAnswer','chamber','query']
