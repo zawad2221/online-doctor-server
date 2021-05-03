@@ -1,4 +1,5 @@
 from rest_framework import parsers
+from django.db.models import Q
 from chamber.models import Chamber, AskedQuery
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
@@ -33,6 +34,27 @@ def patientRegistration(request):
 def getAskedQueryByPatient(request, patientUserId):
     if request.method =="GET":
         askedQuery = AskedQuery.objects.filter(queryId__patientId__patientUserId__userId=patientUserId)
+        #print(askedQuery['askedQueryAnswer'])
+        askedQuerySerializer = AskedQuerySerializer(askedQuery, many = True)
+        return JsonResponse(askedQuerySerializer.data, status=200, safe=False)
+    return HttpResponse("page not found")
+
+def getAnsweredQueryByPatient(request, patientUserId):
+    if request.method =="GET":
+        askedQuery = AskedQuery.objects.filter(
+            ~Q(askedQueryAnswer =""),
+            queryId__patientId__patientUserId__userId=patientUserId
+            )
+        askedQuerySerializer = AskedQuerySerializer(askedQuery, many = True)
+        return JsonResponse(askedQuerySerializer.data, status=200, safe=False)
+    return HttpResponse("page not found")
+
+def getNotAnsweredQueryByPatient(request, patientUserId):
+    if request.method =="GET":
+        askedQuery = AskedQuery.objects.filter(
+            queryId__patientId__patientUserId__userId=patientUserId,
+            askedQueryAnswer=""
+            )
         askedQuerySerializer = AskedQuerySerializer(askedQuery, many = True)
         return JsonResponse(askedQuerySerializer.data, status=200, safe=False)
     return HttpResponse("page not found")
