@@ -12,7 +12,7 @@ class Suggestion(models.Model):
 
 class PatientHistory(models.Model):
     patientHistoryId = AutoField(primary_key=True)
-    patientHistoryDeatils = TextField()
+    patientHistoryDetails = TextField()
     patientId = ForeignKey(Patient, on_delete=models.CASCADE)
 
 class Prescription(models.Model):

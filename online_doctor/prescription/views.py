@@ -9,7 +9,7 @@ from appointment.serializers import AppointmentSerializer
 
 def getPrescriptionByPatientUserId(request,patientUserId):
     if request.method == "GET":
-        prescription = Prescription.objects.filter(appointmentId__appointmentPatientId__patientUserId=patientUserId)
+        prescription = Prescription.objects.filter(appointmentId__appointmentPatientId__patientUserId=patientUserId).order_by('-prescriptionId')
         prescriptionSerializer = PrescriptionSerializer(prescription, many=True)
         return JsonResponse(prescriptionSerializer.data, status=200, safe=False)
     return HttpResponse("page not found")
@@ -24,6 +24,7 @@ def makePrescription(request):
             appointmentSerializer = AppointmentSerializer(appointment)
             data['appointment'] = appointmentSerializer.data
             data['appointment']["appointmentVisitingSchedule"] = data['appointment']["appointmentVisitingSchedule"]["visitingScheduleId"]
+            data['patientHistory']['patientId']= data['appointment']["appointmentPatient"]["patientId"]
             data['appointment']["appointmentPatient"] = data['appointment']["appointmentPatient"]["patientId"]
             #print(data)
             for prescribedMedicine in data['prescribedMedicine']:

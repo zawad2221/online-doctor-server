@@ -3,6 +3,7 @@ from django.db.models.fields import AutoField, CharField, DateField, IntegerFiel
 from django.db.models.fields.related import ForeignKey
 from custom_user.models import User
 
+
 class Patient(models.Model):
     GENDERS = (
         ('male','male'),
@@ -31,4 +32,5 @@ class PatientQuery(models.Model):
     queryId = AutoField(primary_key=True)
     queryDetails = TextField()
     patientId = ForeignKey(Patient, on_delete=models.CASCADE)
+
 

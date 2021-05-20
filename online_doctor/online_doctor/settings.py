@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'pathology',
     'visiting_schedule',
     'appointment',
-    'prescription'
+    'prescription',
+    'patient_report'
 ]
 
 MIDDLEWARE = [

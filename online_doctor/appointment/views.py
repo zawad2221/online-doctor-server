@@ -92,7 +92,7 @@ def getAppointmentByPatientId(request, patientId):
     #test(request)
     if request.method =="GET":
         patient = Patient.objects.get(patientUserId=int(patientId))
-        appointment = Appointment.objects.filter(appointmentPatientId=patient.patientId)
+        appointment = Appointment.objects.filter(appointmentPatientId=patient.patientId).order_by('-appointmentId')
         appointmentSerializer = AppointmentSerializer(appointment, many = True)
         return JsonResponse(appointmentSerializer.data, status=200, safe= False)
     else:
@@ -111,7 +111,7 @@ def getBookedPatientNumberOnScheduleIdAndDate(request, visitingScheduleId, date)
 #return visited appointment
 def getOldAppointmentOfPatient(request, patientUserId, dateOfToday):
     if request.method=="GET":
-        appointment = Appointment.objects.filter(appointmentPatientId__patientUserId__userId = patientUserId, appointmentDate__lt = dateOfToday)
+        appointment = Appointment.objects.filter(appointmentPatientId__patientUserId__userId = patientUserId, appointmentDate__lt = dateOfToday).order_by('-appointmentId')
         appointmentSerializer = AppointmentSerializer(appointment, many =True)
         print(len(appointment))
         return JsonResponse(appointmentSerializer.data, status=200, safe=False)
@@ -120,7 +120,7 @@ def getOldAppointmentOfPatient(request, patientUserId, dateOfToday):
 #return upcomming appointment
 def getNewAppointmentOfPatient(request, patientUserId, dateOfToday):
     if request.method=="GET":
-        appointment = Appointment.objects.filter(appointmentPatientId__patientUserId__userId = patientUserId, appointmentDate__gte = dateOfToday)
+        appointment = Appointment.objects.filter(appointmentPatientId__patientUserId__userId = patientUserId, appointmentDate__gte = dateOfToday).order_by('-appointmentId')
         appointmentSerializer = AppointmentSerializer(appointment, many =True)
         print(len(appointment))
         return JsonResponse(appointmentSerializer.data, status=200, safe=False)
