@@ -26,8 +26,15 @@ class Company(models.Model):
     companyName = CharField(max_length=22)
 
 class MedicineForm(models.Model):
+    FROM_NAME = (
+        ('tablet','tablet'),
+        ('liquid','liquid'),
+        ('capsule','capsule')
+    )
+
     formId = AutoField(primary_key=True)
-    formName = CharField(max_length=22)
+    formName = CharField(max_length=22, choices=FROM_NAME)
+
 
 class Medicine(models.Model):
     medicineId = AutoField(primary_key=True)

@@ -14,15 +14,4 @@ class Migration(migrations.Migration):
         ('pathology', '0001_initial'),
     ]
 
-    operations = [
-        migrations.CreateModel(
-            name='PatientReport',
-            fields=[
-                ('patientReportId', models.AutoField(primary_key=True, serialize=False)),
-                ('sendDate', models.DateTimeField(auto_now_add=True)),
-                ('filePath', models.FileField(upload_to=patient_report.models.PatientReport.user_directory_path)),
-                ('pathologyId', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pathology.pathology')),
-                ('patientId', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='patient.patient')),
-            ],
-        ),
-    ]
+    
