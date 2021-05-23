@@ -7,7 +7,7 @@ from chamber.models import Location
 from chamber.serializers import LocationSerializer
 from custom_user.serializers import CustomUserSerializer
 
-class PathologySerializers(serializers.ModelSerializer):
+class PathologySerializer(serializers.ModelSerializer):
     pathologyId = serializers.IntegerField(required=False)
     pathologyLocation = RelatedFieldAlternative(queryset=Location.objects.all(),serializer=LocationSerializer, source='pathologyLocationId')
     pathologyUser = RelatedFieldAlternative(queryset=User.objects.all(), serializer=CustomUserSerializer, source='pathologyUserId')

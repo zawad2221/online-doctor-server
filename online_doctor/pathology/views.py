@@ -5,7 +5,7 @@ from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 
 from chamber.serializers import LocationSerializer
-from .serializers import PathologySerializers
+from .serializers import PathologySerializer
 from custom_user.serializers import CustomUserSerializer
 from custom_user.views import userCreate
 
@@ -23,7 +23,7 @@ def pathologyRegistration(request):
             user = userCreate(data['pathologyUser'])
            
             data['pathologyUser']=user.userId
-            chamber = PathologySerializers(data=data)
+            chamber = PathologySerializer(data=data)
             if chamber.is_valid():
                 chamber.save()
                 return JsonResponse(chamber.data, status=201)

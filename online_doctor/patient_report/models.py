@@ -26,9 +26,9 @@ class TestReport(models.Model):
     
     def user_directory_path(instance, filename):
         
-        filename=str(datetime.date(datetime.now()))+"_"+filename
+        #filename=str(datetime.date(datetime.now()))+"_"+filename
         # file will be uploaded to MEDIA_ROOT/patient_<id>/patientReport_<id>/<filename>
-        return 'file/patient_report/patient_id_{0}/pathology_id_{1}/{2}'.format(instance.prescriptionId.appointmentId.appointmentPatientId.patientId,instance.testId.pathologyId.pathologyId , filename)
+        return 'file/patient_report/patient_id_{0}/pathology_id_{1}/{2}/{3}'.format(instance.prescriptionId.appointmentId.appointmentPatientId.patientId,instance.testId.pathologyId.pathologyId ,str(datetime.now()), filename)
     testReportId = AutoField(primary_key=True)
     testReportDetails = TextField()
     issueDate = models.DateField(blank=True, null=True)
@@ -36,5 +36,6 @@ class TestReport(models.Model):
     filePath = models.FileField(upload_to=user_directory_path,blank=True, null=True)
     prescriptionId = ForeignKey(Prescription, on_delete=models.CASCADE)
     testId = ForeignKey(Test, on_delete=models.CASCADE,blank=True,null=True)
+    typeId = ForeignKey(TestType, on_delete=models.CASCADE)
     
     
