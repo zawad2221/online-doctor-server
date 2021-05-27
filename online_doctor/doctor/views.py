@@ -7,6 +7,9 @@ from .models import Specialization, Doctor
 from .serializers import DoctorSerializer, SpecializationSerializer
 from custom_user.serializers import CustomUserSerializer
 from custom_user.views import userCreate
+from visiting_schedule.models import VisitingSchedule
+from visiting_schedule.serializers import VisitingScheduleSerializer
+from appointment.models import Appointment
 
 @csrf_exempt 
 def getSpecialization(request):
@@ -33,3 +36,13 @@ def doctorRegistration(request):
         return JsonResponse({'response':'failed to create'}, status = 400)
     return HttpResponse("page not found")
 
+#date to calculate number of patient booked for next schedule
+def getVisitingScheduleByDoctorUserId(request, doctorUserId):
+    if request.method=="GET":
+        visitingSchedule = VisitingSchedule.objects.filter(visitingScheduleDoctorId__doctorUserId=doctorUserId)
+        visitingScheduleSerializer = VisitingScheduleSerializer(visitingSchedule, many=True)
+        #appointment = Appointment.objects.filter(appointmentVisitingScheduleId__visitingScheduleDoctorId__doctorUserId=doctorUserId, appointmentDate=date)
+        #visitingScheduleSerializer.data['numberOfPatientBooked']=len(appointment)
+        return JsonResponse(visitingScheduleSerializer.data, status=200, safe=False)
+    return HttpResponse("page not found")
+    
