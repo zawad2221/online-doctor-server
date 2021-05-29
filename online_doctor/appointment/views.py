@@ -6,6 +6,15 @@ from appointment.serializers import AppointmentSerializer
 from .models import Appointment
 from patient.models import Patient
 
+
+def getAppointmentByDoctorUserIdScheduleIdAndDate(request, doctorUserId, visitingScheduleId, date):
+    if request.method=="GET":
+        appointment = Appointment.objects.filter(appointmentDate = date, appointmentVisitingScheduleId=visitingScheduleId, appointmentVisitingScheduleId__visitingScheduleDoctorId__doctorUserId=doctorUserId)
+        appointmentSerializer = AppointmentSerializer(appointment, many=True)
+        return JsonResponse(appointmentSerializer.data, status=200, safe=False)
+    return HttpResponse("page not found")
+
+
 def test(request):
             data = JSONParser().parse(request)
             # appointment = getAppointmentByDate(data["appointmentDate"])
