@@ -31,7 +31,8 @@ class AppointmentSerializer(serializers.ModelSerializer):
             'appointmentDate',
             'appointmentSerialNumber',
             'appointmentVisitingSchedule',
-            'appointmentPatient'
+            'appointmentPatient',
+            'appointmentType'
             ]
         
         

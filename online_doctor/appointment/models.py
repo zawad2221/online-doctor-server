@@ -5,6 +5,11 @@ from visiting_schedule.models import VisitingSchedule
 from patient.models import Patient
 
 class Appointment(models.Model):
+    APPOINTMENT_TYPE = (
+        ('old','old'),
+        ('report','report'),
+        ('new','new')
+    )
     appointmentId = AutoField(primary_key=True)
     appointmentPaymentCredential = CharField(max_length=11, blank= True)
     appointmentPatientSymptomNote = TextField(blank= True)
@@ -14,6 +19,7 @@ class Appointment(models.Model):
     appointmentIsVisited = BooleanField(default=False,blank= True)
     appointmentDate = DateField()
     appointmentSerialNumber = IntegerField()
+    appointmentType = CharField(max_length=11, choices=APPOINTMENT_TYPE)
     appointmentVisitingScheduleId = ForeignKey(VisitingSchedule, on_delete= models.CASCADE)
     appointmentPatientId = ForeignKey(Patient, on_delete= models.CASCADE)
 

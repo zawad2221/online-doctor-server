@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.fields import AutoField, BooleanField, CharField, FloatField, IntegerField, TimeField
+from django.db.models.fields import AutoField, BooleanField, CharField, FloatField, IntegerField, TextField, TimeField
 from django.db.models.fields.related import ForeignKey
 from rest_framework import serializers
 
@@ -44,6 +44,6 @@ class VisitingSchedule(models.Model):
     visitingScheduleDaysOfWeekId = ForeignKey(DaysOfWeek, on_delete= models.CASCADE)
     visitingScheduleDoctorId = ForeignKey(Doctor, on_delete= models.CASCADE)
     visitingScheduleChamberId = ForeignKey(Chamber, on_delete=models.CASCADE)
-
+    visitingScheduleAdditionalInformation = TextField()
 
 

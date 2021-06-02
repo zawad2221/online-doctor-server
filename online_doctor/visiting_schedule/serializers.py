@@ -52,7 +52,8 @@ class VisitingScheduleSerializer(serializers.ModelSerializer):
             "visitingScheduleFee", 
             "visitingScheduleDaysOfWeek", 
             "visitingScheduleDoctor", 
-            "visitingScheduleChamber"
+            "visitingScheduleChamber",
+            "visitingScheduleAdditionalInformation"
             ]
             
 
