@@ -11,6 +11,10 @@ from visiting_schedule.models import VisitingSchedule
 from visiting_schedule.serializers import VisitingScheduleSerializer
 from appointment.models import Appointment
 import datetime
+from datetime import datetime as dt
+
+import pytz
+
 
 @csrf_exempt 
 def getSpecialization(request):
@@ -49,18 +53,24 @@ DAYS = {
 def next_weekday(d, weekday):
     days_ahead = weekday - d.weekday()
     print("day ahed",days_ahead)
-    if days_ahead <= 0: # Target day already happened this week
+    if days_ahead < 0: # Target day already happened this week <=
         days_ahead += 7
     return d + datetime.timedelta(days_ahead)
 
-#date to calculate number of patient booked for next schedule
+
 def getVisitingScheduleByDoctorUserId(request, doctorUserId):
     if request.method=="GET":
+        # tz_NY = pytz.timezone('Asia/Dhaka')
+        # datetime_NY = dt.now(tz_NY)
+        # print("NY time:", datetime_NY.date())
         visitingSchedule = VisitingSchedule.objects.filter(visitingScheduleDoctorId__doctorUserId=doctorUserId)
         visitingScheduleSerializer = VisitingScheduleSerializer(visitingSchedule, many=True)
         for vs in visitingScheduleSerializer.data:
-            d = datetime.date.today()
-            next_schedule_date = next_weekday(d, DAYS[vs['visitingScheduleDaysOfWeek']['day']])
+            #d = datetime.date.today()
+            tz_NY = pytz.timezone('Asia/Dhaka')
+            datetime_NY = dt.now(tz_NY)
+            next_schedule_date = next_weekday(datetime_NY.date(), DAYS[vs['visitingScheduleDaysOfWeek']['day']])
+            #print(d)
             #vs['numberOfPatientBooked'] = next_schedule_date
             appointment = Appointment.objects.filter(appointmentVisitingScheduleId__visitingScheduleDoctorId__doctorUserId=doctorUserId, appointmentDate=next_schedule_date)
             vs['numberOfPatientBooked']=len(appointment)

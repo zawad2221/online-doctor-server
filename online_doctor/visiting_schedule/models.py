@@ -19,7 +19,7 @@ class DaysOfWeek(models.Model):
 
     )
     datsOfWeekId = AutoField(primary_key=True)
-    day = CharField(max_length= 10, choices = DAYS)
+    day = CharField(max_length= 10, choices = DAYS, unique=True)
 
     def __str__(self):
         return self.day
@@ -38,8 +38,8 @@ class VisitingSchedule(models.Model):
     startAt = TimeField()
     endAt = TimeField()
     maxPatient = IntegerField()
-    isCanceled = BooleanField()
-    isDeleted = BooleanField()
+    isCanceled = BooleanField(default=False)
+    isDeleted = BooleanField(default=False)
     visitingScheduleFeeId = ForeignKey(Fee, on_delete= models.CASCADE)
     visitingScheduleDaysOfWeekId = ForeignKey(DaysOfWeek, on_delete= models.CASCADE)
     visitingScheduleDoctorId = ForeignKey(Doctor, on_delete= models.CASCADE)
