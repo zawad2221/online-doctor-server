@@ -10,11 +10,23 @@ from custom_user.views import userCreate
 from visiting_schedule.models import VisitingSchedule
 from visiting_schedule.serializers import VisitingScheduleSerializer
 from appointment.models import Appointment
+from chamber.models import Chamber
+from chamber.serializers import ChamberSerializer
 import datetime
 from datetime import datetime as dt
-
 import pytz
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
+
+
+
+def searchChamber(request, query):
+    if request.method=="GET":
+        chamber = Chamber.objects.filter(Q(chamberUserId__userPhoneNumber__contains=query)|Q(chamberUserId__userName__contains=query))
+        chamberSerializer = ChamberSerializer(chamber, many=True)
+        return JsonResponse(chamberSerializer.data, status=200, safe=False)
+    return HttpResponse("page not found")
 
 @csrf_exempt 
 def getSpecialization(request):
