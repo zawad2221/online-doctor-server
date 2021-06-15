@@ -84,7 +84,7 @@ def getVisitingScheduleByDoctorUserId(request, doctorUserId):
             next_schedule_date = next_weekday(datetime_NY.date(), DAYS[vs['visitingScheduleDaysOfWeek']['day']])
             #print(d)
             #vs['numberOfPatientBooked'] = next_schedule_date
-            appointment = Appointment.objects.filter(appointmentVisitingScheduleId__visitingScheduleDoctorId__doctorUserId=doctorUserId, appointmentDate=next_schedule_date)
+            appointment = Appointment.objects.filter(appointmentVisitingScheduleId=vs['visitingScheduleId'], appointmentVisitingScheduleId__visitingScheduleDoctorId__doctorUserId=doctorUserId, appointmentDate=next_schedule_date)
             vs['numberOfPatientBooked']=len(appointment)
         return JsonResponse(visitingScheduleSerializer.data, status=200, safe=False)
     return HttpResponse("page not found")

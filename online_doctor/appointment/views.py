@@ -6,6 +6,51 @@ from appointment.serializers import AppointmentSerializer
 from .models import Appointment
 from patient.models import Patient
 
+@csrf_exempt
+def updateAppointment(request):
+    if request.method=="POST":
+        valid = True
+        try:
+            data = JSONParser().parse(request)
+            index=0
+            deletedIndex=[]
+            deleted = 0
+            print(data)
+            for da in data:
+                appointment = Appointment.objects.get(appointmentId = da['appointmentId'])
+                try:
+                    da['appointmentVisitingSchedule'] = da['appointmentVisitingSchedule']['visitingScheduleId']
+                    da['appointmentPatient'] = da['appointmentPatient']['patientId']
+                except:
+                    pass2
+                print(da)
+                if da['appointmentIsCanceled']==True:
+                    print("delete")
+                    appointment.delete()
+                    deletedIndex.append(index)
+                    deleted+=1
+                else:
+                    print("deleted value",deleted)
+                    da["appointmentSerialNumber"] = int(da["appointmentSerialNumber"]) - deleted
+                    appointmentSerializer = AppointmentSerializer(appointment, data=da)
+                    print(appointmentSerializer.is_valid())
+                    if appointmentSerializer.is_valid():
+                        appointmentSerializer.save()
+                    else:
+                        valid =False
+                del da['appointmentVisitingSchedule']
+                del da['appointmentPatient']
+                index+=1
+            if valid:
+                for ind in deletedIndex:
+                    del data[ind]
+                return JsonResponse(data, status=201, safe=False)
+        except Exception:
+            return JsonResponse({"response":"bad request"}, status=400)
+    
+    return HttpResponse("page not found")
+
+
 
 def getAppointmentByDoctorUserIdScheduleIdAndDate(request, doctorUserId, visitingScheduleId, date):
     if request.method=="GET":
@@ -74,7 +119,7 @@ def makeAppointment(request):
             print("appointment data ", data)
             if appointmentSerializer.is_valid():
                 appointmentSerializer.save()
-                return JsonResponse(appointmentSerializer.data, status=201)
+                return JsonResponse(appointmentSerializer.data, status=201, safe=False)
             
         except Exception:
             print(Exception)

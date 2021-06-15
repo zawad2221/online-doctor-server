@@ -10,11 +10,11 @@ from doctor.models import Doctor
 
 
 @csrf_exempt
-def createVisitingScheudle(request):
+def createVisitingSchedule(request):
     if request.method=="POST":
         try:
             data = JSONParser().parse(request)
-            data['visitingScheduleChamber'] = Chamber.objects.get(chamberUserId__userPhoneNumber=data['visitingScheduleChamber']['chamberUser']['userPhoneNumber']).chamberId
+            data['visitingScheduleChamber'] = data['visitingScheduleChamber']['chamberId']
             data['visitingScheduleDoctor'] = Doctor.objects.get(doctorUserId=data['visitingScheduleDoctor']['doctorUser']['userId']).doctorId
             data['visitingScheduleDaysOfWeek'] = DaysOfWeek.objects.get(day=data['visitingScheduleDaysOfWeek']['day']).datsOfWeekId
             feeSerializer = FeeSerializer(data=data['visitingScheduleFee'])

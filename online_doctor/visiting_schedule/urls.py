@@ -1,6 +1,6 @@
 from django import urls
 from django.urls import path
-from .views import getVisitingScheduleOnChamberAndSpecialization, createVisitingScheudle
+from .views import getVisitingScheduleOnChamberAndSpecialization, createVisitingSchedule
 
 urlpatterns = [
     path(
@@ -8,6 +8,6 @@ urlpatterns = [
         getVisitingScheduleOnChamberAndSpecialization, 
         name= 'getVisitingScheduleOnChamberAndSpecialization'
         ),
-    path('createVisitingScheudle/', createVisitingScheudle, name='createVisitingScheudle')
+    path('createVisitingSchedule/', createVisitingSchedule, name='createVisitingSchedule')
 
 ]
